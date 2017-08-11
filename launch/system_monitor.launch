@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <arg name="machine_name" default="$(optenv HOSTNAME localhost)"/>
   <arg name="config_file" default="$(find system_monitor)/config/system_monitor.yaml"/>

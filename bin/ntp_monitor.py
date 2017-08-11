@@ -54,6 +54,7 @@ def ntp_monitor(offset=500, self_offset=500, diag_hostname = None, error_offset 
     rospy.init_node(NAME, anonymous=True)
 
     hostname = socket.gethostname()
+    hostname = hostname.replace('-', '_')
     if diag_hostname is None:
         diag_hostname = hostname
 
@@ -63,7 +64,7 @@ def ntp_monitor(offset=500, self_offset=500, diag_hostname = None, error_offset 
 
     stat = DiagnosticStatus()
     stat.level = 0
-    stat.name = "NTP offset from "+ diag_hostname + " to " + ntp_hostname
+    stat.name = "system_monitor/("+diag_hostname+") NTP offset"
     stat.message = "OK"
     stat.hardware_id = hostname
     stat.values = []
@@ -90,7 +91,8 @@ def ntp_monitor(offset=500, self_offset=500, diag_hostname = None, error_offset 
                 measured_offset = float(re.search("offset (.*),", o).group(1))*1000000
                 st.level = DiagnosticStatus.OK
                 st.message = "OK"
-                st.values = [ KeyValue("Offset (us)", str(measured_offset)),
+                st.values = [ KeyValue("NTP Host Name",  str(ntp_hostname)),
+                              KeyValue("Offset (us)", str(measured_offset)),
                               KeyValue("Offset tolerance (us)", str(off)),
                               KeyValue("Offset tolerance (us) for Error", str(error_offset)) ]
 
@@ -104,7 +106,8 @@ def ntp_monitor(offset=500, self_offset=500, diag_hostname = None, error_offset 
             else:
                 st.level = DiagnosticStatus.ERROR
                 st.message = "Error Running ntpdate. Returned %d" % res
-                st.values = [ KeyValue("Offset (us)", "N/A"),
+                st.values = [ KeyValue("NTP Host Name", str(ntp_hostname)),
+                              KeyValue("Offset (us)", "N/A"),
                               KeyValue("Offset tolerance (us)", str(off)),
                               KeyValue("Offset tolerance (us) for Error", str(error_offset)),
                               KeyValue("Output", o),

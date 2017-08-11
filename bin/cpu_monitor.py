@@ -104,7 +104,7 @@ class CPUMonitor():
         self._cpu_temp_warn = rospy.get_param('~cpu_temp_warn', cpu_temp_warn)
         self._cpu_temp_error = rospy.get_param('~cpu_temp_error', cpu_temp_error)
 
-        self._num_cores = rospy.get_param('~num_cores', 0)
+        self._num_cores = rospy.get_param('~num_cores', 1)
 
         self._temps_timer = None
         self._usage_timer = None
@@ -114,7 +114,7 @@ class CPUMonitor():
 
         # CPU stats
         self._temp_stat = DiagnosticStatus()
-        self._temp_stat.name = 'CPU Temperature (%s)' % diag_hostname
+        self._temp_stat.name = 'system_monitor/(%s) CPU Temperature' % diag_hostname
         self._temp_stat.level = 1
         self._temp_stat.hardware_id = hostname
         self._temp_stat.message = 'No Data'
@@ -122,7 +122,7 @@ class CPUMonitor():
                                    KeyValue(key = 'Time Since Last Update', value = 'N/A') ]
 
         self._usage_stat = DiagnosticStatus()
-        self._usage_stat.name = 'CPU Usage (%s)' % diag_hostname
+        self._usage_stat.name = 'system_monitor/(%s) CPU Usage' % diag_hostname
         self._usage_stat.level = 1
         self._usage_stat.hardware_id = hostname
         self._usage_stat.message = 'No Data'

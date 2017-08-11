@@ -97,7 +97,7 @@ class MemMonitor():
         self._usage_timer = None
         
         self._usage_stat = DiagnosticStatus()
-        self._usage_stat.name = 'Memory Usage (%s)' % diag_hostname
+        self._usage_stat.name = 'system_monitor/(%s) Memory Usage' % diag_hostname
         self._usage_stat.level = 1
         self._usage_stat.hardware_id = hostname
         self._usage_stat.message = 'No Data'
@@ -138,17 +138,20 @@ class MemMonitor():
             total_mem_physical = data[1]
             used_mem_physical = data[2]
             free_mem_physical = data[3]
-            data = rows[2].split()
-            used_mem_wo_buffers = data[2]
-            free_mem_wo_buffers = data[3]
-            data = rows[3].split()
+            #data = rows[2].split() #removed for 16.04
+            #used_mem_wo_buffers = data[2] #removed for 16.04
+            #free_mem_wo_buffers = data[3] #removed for 16.04
+            data = rows[2].split() 
             total_mem_swap = data[1]
             used_mem_swap = data[2]
             free_mem_swap = data[3]
-            data = rows[4].split()
+            data = rows[3].split()
             total_mem = data[1]
             used_mem = data[2]
             free_mem = data[3]
+            
+            used_mem_wo_buffers=used_mem #added for 16.04
+            free_mem_wo_buffers=free_mem #added for 16.04
 
             level = DiagnosticStatus.OK
             mem_usage = float(used_mem_wo_buffers)/float(total_mem_physical)
